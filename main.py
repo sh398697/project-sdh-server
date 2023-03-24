@@ -15,6 +15,19 @@ class Item(db.Model):
     def __repr__(self):
         return f'<Item {self.name}>'
 
+class Book(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(50))
+    author = db.Column(db.String(50))
+    genre = db.Column(db.String(50))
+    year = db.Column(db.String(50))
+    image = db.Column(db.String(50))
+    review = db.Column(db.String(50))
+    owner = db.Column(db.String(50))
+
+    def __repr__(self):
+        return f'<Book {self.title}>'
+
 @app.route("/")
 def hello():
     return "Welcome to Flask Application!"
