@@ -15,6 +15,18 @@ class Item(db.Model):
     def __repr__(self):
         return f'<Item {self.name}>'
 
+class Book(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(50), nullable=False)
+    author = db.Column(db.String(50), nullable=False)
+    genre = db.Column(db.String(50), nullable=False)
+    image = db.Column(db.String(50), nullable=False)
+    review = db.Column(db.String(50), nullable=False)
+    owner = db.Column(db.String(50), nullable=False)
+
+    def __repr__(self):
+        return f'<Book {self.name}>'
+
 @app.route("/")
 def hello():
     return "Welcome to Flask Application!"
@@ -25,6 +37,11 @@ if __name__ == "__main__":
 def get_items():
     items = Item.query.all()
     return jsonify([{'id': item.id, 'name': item.name} for item in items])
+
+@app.route('/books', methods=['GET'])
+def get_books():
+    books = Book.query.all()
+    return jsonify([{'id': book.id, 'title': book.title} for book in books])
 
 @app.route('/items', methods=['POST'])
 def add_item():
