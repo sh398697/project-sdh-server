@@ -26,7 +26,7 @@ class Book(db.Model):
     owner = db.Column(db.String(50))
 
     def __repr__(self):
-        return f'<Book {self.name}>'
+        return f'<Book {self.title}>'
 
 @app.route("/")
 def hello():
