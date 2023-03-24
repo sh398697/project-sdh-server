@@ -20,6 +20,7 @@ class Book(db.Model):
     title = db.Column(db.String(50))
     author = db.Column(db.String(50))
     genre = db.Column(db.String(50))
+    year = db.Column(db.String(50))
     image = db.Column(db.String(50))
     review = db.Column(db.String(50))
     owner = db.Column(db.String(50))
