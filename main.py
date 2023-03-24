@@ -17,7 +17,7 @@ class Item(db.Model):
 
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(50), nullable=False)
+    title = db.Column(db.String(50))
     author = db.Column(db.String(50))
     genre = db.Column(db.String(50))
     image = db.Column(db.String(50))
@@ -41,7 +41,7 @@ def get_items():
 @app.route('/books', methods=['GET'])
 def get_books():
     books = Book.query.all()
-    return jsonify([{'id': book.id, 'title': book.title} for book in books])
+    return jsonify([{'id': book.id, 'title': book.title, 'author': book.author, 'genre': book.genre, 'year': book.year, 'image': book.image, 'review': book.review, 'owner': book.owner} for book in books])
 
 @app.route('/items', methods=['POST'])
 def add_item():
