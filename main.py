@@ -39,6 +39,11 @@ def get_items():
     items = Item.query.all()
     return jsonify([{'id': item.id, 'name': item.name} for item in items])
 
+@app.route('/books', methods=['GET'])
+def get_books():
+    books = Book.query.all()
+    return jsonify([{'id': book.id, 'title': book.title}, 'author': book.author}, 'genre': book.genre}, 'year': book.year}, 'image': book.image}, 'review': book.review}, 'owner': book.owner} for book in books])
+
 @app.route('/items', methods=['POST'])
 def add_item():
     name = request.json['name']
