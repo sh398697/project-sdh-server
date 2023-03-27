@@ -76,6 +76,11 @@ def get_friendship():
     items = Item.query.all()
     return jsonify([{'id': item.id, 'name': item.name} for item in items])
 
+@app.route('/posts', methods=['GET'])
+def get_post():
+    posts = Post.query.all()
+    return jsonify([{'id': post.id, 'text': post.text, 'author': post.author, 'receipient': post.receipient} for item in items])
+
 @app.route('/items', methods=['POST'])
 def add_item():
     name = request.json['name']
