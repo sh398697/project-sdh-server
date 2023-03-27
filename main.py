@@ -50,6 +50,15 @@ class Friendship(db.Model):
     def __repr__(self):
         return f'<Friendship {self.id}>'
 
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(50))
+    author = db.Column(db.String(50))
+    recipient = db.Column(db.String(50))
+
+    def __repr__(self):
+        return f'<Post {self.id}>'
+
 @app.route("/")
 def hello():
     return "Welcome to Flask Application!"
@@ -72,14 +81,14 @@ def get_users():
     return jsonify([{'id': user.id, 'fname': user.fname, 'lname': user.lname, 'location': user.location, 'image': user.image} for user in users])
 
 @app.route('/friendships', methods=['GET'])
-def get_friendship():
+def get_friendships():
     items = Item.query.all()
     return jsonify([{'id': item.id, 'name': item.name} for item in items])
 
 @app.route('/posts', methods=['GET'])
-def get_post():
+def get_posts():
     posts = Post.query.all()
-    return jsonify([{'id': post.id, 'text': post.text, 'author': post.author, 'receipient': post.receipient} for item in items])
+    return jsonify([{'id': post.id, 'text': post.text, 'author': post.author, 'receipient': post.receipient} for post in posts])
 
 @app.route('/items', methods=['POST'])
 def add_item():
@@ -91,6 +100,16 @@ def add_item():
 
 @app.route('/friendships', methods=['POST'])
 def add_friendship():
+    friend1 = request.json['friend1']
+    friend2 = request.json['friend2']
+    status = request.json['status']
+    friendship = Friendship(friend1=friend1, friend2=friend2, status=status)
+    db.session.add(friendship)
+    db.session.commit()
+    return jsonify({'id': friendship.id, 'friend1': friendship.friend1, 'friend2': friendship.friend2, 'status': friendship.status})
+
+@app.route('/posts', methods=['POST'])
+def add_post():
     friend1 = request.json['friend1']
     friend2 = request.json['friend2']
     status = request.json['status']
@@ -123,9 +142,20 @@ def update_item(item_id):
 @app.route('/friendships/<int:friendship_id>', methods=['PUT'])
 def update_friendship(friendship_id):
     friendship = Friendship.query.get(friendship_id)
-    friendship.name = request.json['name']
+    friendship.friend1 = request.json['friend1']
+    friendship.friend2 = request.json['friend2']
+    friendship.friend2 = request.json['friend2']
     db.session.commit()
-    return jsonify({'id': friendship.id, 'status': friendship.status})
+    return jsonify({'id': friendship.id, 'friend1': friendship.friend1, 'friend2': friendship.friend2, 'status': friendship.status})
+
+@app.route('/posts/<int:post_id>', methods=['PUT'])
+def update_post(post_id):
+    post = Post.query.get(post_id)
+    post.text = request.json['text']
+    post.author = request.json['author']
+    post.recipient = request.json['recipient']
+    db.session.commit()
+    return jsonify({'id': post.id, 'text': post.text, 'author': post.author, 'recipient': post.recipient})
 
 @app.route('/items/<int:item_id>', methods=['DELETE'])
 def delete_item(item_id):
@@ -134,9 +164,23 @@ def delete_item(item_id):
     db.session.commit()
     return '', 204
 
+@app.route('/users/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    user = User.query.get(user_id)
+    db.session.delete(user)
+    db.session.commit()
+    return '', 204
+
 @app.route('/friendships/<int:friendship_id>', methods=['DELETE'])
 def delete_friendship(friendship_id):
     friendship = Friendship.query.get(friendship_id)
     db.session.delete(friendship)
+    db.session.commit()
+    return '', 204
+
+@app.route('/posts/<int:post_id>', methods=['DELETE'])
+def delete_post(post_id):
+    post = Post.query.get(post_id)
+    db.session.delete(post)
     db.session.commit()
     return '', 204
