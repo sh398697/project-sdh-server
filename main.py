@@ -82,8 +82,8 @@ def get_users():
 
 @app.route('/friendships', methods=['GET'])
 def get_friendships():
-    items = Item.query.all()
-    return jsonify([{'id': item.id, 'name': item.name} for item in items])
+    friendships = Friendship.query.all()
+    return jsonify([{'id': friendship.id, 'friend1': friendship.friend1, 'friend2': friendship.friend2, 'status': friendship.status} for friendship in friendships])
 
 @app.route('/posts', methods=['GET'])
 def get_posts():
