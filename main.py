@@ -88,7 +88,7 @@ def get_friendships():
 @app.route('/posts', methods=['GET'])
 def get_posts():
     posts = Post.query.all()
-    return jsonify([{'id': post.id, 'text': post.text, 'author': post.author, 'receipient': post.receipient} for post in posts])
+    return jsonify([{'id': post.id, 'text': post.text, 'author': post.author, 'recipient': post.recipient} for post in posts])
 
 @app.route('/items', methods=['POST'])
 def add_item():
